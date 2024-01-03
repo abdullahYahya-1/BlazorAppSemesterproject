@@ -1,0 +1,134 @@
+﻿
+@page "/Form"
+@using BlazorAppProject.Data;
+@inject MyDbContext DbContext
+
+<body>
+    <EditForm Model=myStudent OnSubmit="Submission" class="form">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <section class="container mt-4">
+        <header>Registration Form</header>
+        <div class="column">
+
+            <div class="input-box">
+                <label>First Name</label>
+                <input type="text" @bind="myStudent.FirstName" placeholder="Enter First Name" required />
+                <ValidationMessage For="@(() => myStudent.FirstName)" />
+            </div>
+
+            <div class="input-box">
+                <label>Last Name</label>
+                <input type="text" @bind="myStudent.LastName" placeholder="Enter Last Name" required />
+                <ValidationMessage For="@(() => myStudent.LastName)" />
+            </div>
+        </div>
+
+        <div class="column">
+
+            <div class="input-box">
+                <label>Father Name</label>
+                <input type="text" @bind="myStudent.FatherName" placeholder="Enter Father Name" required />
+                <ValidationMessage For="@(() => myStudent.FatherName)" />
+            </div>
+
+            <div class="input-box">
+                <label>Gardian Name</label>
+                <input type="text" @bind="myStudent.GardianName" placeholder="Enter Gardian Name" required />
+                <ValidationMessage For="@(() => myStudent.GardianName)" />
+            </div>
+        </div>
+
+        <div class="input-box">
+            <label>Email Address</label>
+            <input type="email" @bind="myStudent.Email" placeholder="Enter Email Address" required />
+            <ValidationMessage For="@(() => myStudent.Email)" />
+        </div>
+
+        <div class="column">
+            <div class="input-box">
+                <label>Phone Number</label>
+                <input type="tel" @bind="myStudent.PhoneNumber" placeholder="Enter phone number" required />
+                <ValidationMessage For="@(() => myStudent.PhoneNumber)" />
+            </div>
+            <div class="input-box">
+                <label>Birth Date</label>
+                <input type="date" @bind="myStudent.BirthDate" placeholder="Enter Date of Birth" required />
+                <ValidationMessage For="@(() => myStudent.BirthDate)" />
+            </div>
+        </div>
+
+        <div class="input-box">
+            <label>Class</label>
+            <input type="text" @bind="myStudent.Class" placeholder="Enter class in number or text" required />
+            <ValidationMessage For="@(() => myStudent.Class)" />
+        </div>
+
+            <div class="gender-box">
+                <h3>Gender</h3>
+                <div class="gender-option">
+                    <div class="gender">
+                        <input type="radio" id="check-male" name="gender" @bind="myStudent.Gender" required />
+                        <label for="check-male">Male</label>
+                    </div>
+                    <div class="gender">
+                        <input type="radio" id="check-female" name="gender"  @bind="myStudent.Gender"  required />
+                        <label for="check-female">Female</label>
+                    </div>
+                </div>
+                <ValidationMessage For="@(() => myStudent.Gender)" />
+            </div>
+
+
+        <div class="input-box address">
+            <label>Address</label>
+            <input type="text" @bind="myStudent.StreetAddress" placeholder="Enter street address" required />
+            <ValidationMessage For="@(() => myStudent.StreetAddress)" />
+
+            <div class="column">
+                <input type="text" @bind="myStudent.City" placeholder="Enter your City" required />
+                <ValidationMessage For="@(() => myStudent.City)" />
+                <input type="text" @bind="myStudent.Region" placeholder="Enter your Region" required />
+                <ValidationMessage For="@(() => myStudent.Region)" />
+            </div>
+        </div>
+        <button type="submit">Submit</button>
+    </section>
+</EditForm>
+
+</body>
+
+@code{
+
+    private AddmissionStudents myStudent = new AddmissionStudents();
+
+
+
+    async Task Submission()
+    {
+        try
+        {
+
+            // Add the student to the database
+            await DbContext.AddStudentAsync(myStudent);
+
+            // Optionally, you can reset the form or perform other actions after saving
+            myStudent = new AddmissionStudents();
+        }
+        catch (Exception ex)
+        {
+            // Log or handle the exception
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    
+
+
+
+
+
+    void PreventDefault() { }
+
+    
+}
